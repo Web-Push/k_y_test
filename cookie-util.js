@@ -10,7 +10,7 @@ function writeCookie(aValue, aName, aExpires) {
     // クッキーの有効確認
     if (isEnabledCookie()) {
         if (!value) {
-            return;
+            return false;
         }
         if (!name) {
             name = COOKIE_NAME;
@@ -24,6 +24,9 @@ function writeCookie(aValue, aName, aExpires) {
 
         // クッキーの発行（書き込み）
         document.cookie = name + "=" + escape(value) + "; expires=" + expires;
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -49,9 +52,33 @@ function readCookie(aName) {
                 }
             }
         }
-        document.write(cookie);
     }
     return cookie;
+}
+
+/** クッキーの削除 */
+function deleteCookie(aName) {
+    var name = aName;
+
+    // クッキーの有効確認
+    if (isEnabledCookie()) {
+        if (!name) {
+            name = COOKIE_NAME;
+        }
+
+        //日付データを作成する
+        var date1 = new Date();
+
+        //1970年1月1日00:00:00の日付データをセットする
+        date1.setTime(0);
+
+        //有効期限を過去にして書き込む
+        document.cookie = name + "=;expires=" + date1.toGMTString();
+
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /** クッキーの有無確認 */
