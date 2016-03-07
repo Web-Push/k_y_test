@@ -12,35 +12,42 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
         <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
         <!-- particles用のCSS読み込み -->
+        <link rel="stylesheet" type="text/css"href="stylesheets/style.css"  media="screen,print" />
         <link rel="stylesheet" type="text/css" href="stylesheets/progress.css" media="screen">
 
         <!-- Include manifest file in the page -->
         <link rel="manifest" href="manifest.json">
     </head>
     <body>
-        <section class="page-header">
-            <h1 class="project-name">CookieTest</h1>
-            <h2 class="project-tagline"></h2>
-            <!-- ID入力フォーム -->
-            <form name="in">
-                <input class=".main-content input" type="text" id="id_auIdTxt" maxlength="30" value="">
-            </form>
-            <h2 class="project-tagline"></h2>
-            <!-- ログイン系ボタン -->
-            <a class="btn" id="id_loginBtn" onClick="onLogin()">Login</a>
-            <a class="btn" id="id_logoutBtn" onClick="onLogout()" style="display:none">Logout</a>
+        <div id="particles-js">
+            <section class="page-header">
+                <h1 class="project-name">CookieTest</h1>
+                <h2 class="project-tagline"></h2>
+                <!-- ID入力フォーム -->
+                <form name="in">
+                    <input class=".main-content input" type="text" id="id_auIdTxt" maxlength="30" value="">
+                </form>
+                <h2 class="project-tagline"></h2>
+                <!-- ログイン系ボタン -->
+                <a class="btn" id="id_loginBtn" onClick="onLogin()">Login</a>
+                <a class="btn" id="id_logoutBtn" onClick="onLogout()" style="display:none">Logout</a>
 
-            <h2 class="project-tagline"></h2>
+                <h2 class="project-tagline"></h2>
 
-            <!-- その他各種ボタン -->
-            <a class="btn" onClick="onWrite()">Write</a>
-            <a class="btn" onClick="onRead()">Read</a>
-            <a class="btn" onClick="onDelete()">Delete</a>
-            <h2 class="project-tagline"></h2>
-            <a href="sub_index.html" target="_blank" class="btn">New Window</a>
-        </section>
+                <!-- その他各種ボタン -->
+                <a class="btn" onClick="onWrite()">Write</a>
+                <a class="btn" onClick="onRead()">Read</a>
+                <a class="btn" onClick="onDelete()">Delete</a>
+                <h2 class="project-tagline"></h2>
+                <a href="sub_index.html" target="_blank" class="btn">New Window</a>
+            </section>
+        </div>
 
         <div id="id_loader" style="display:none"></div>
+
+        <!-- particles要のJavaScript読み込み -->
+        <script src="js/particles.min.js"></script>
+        <script src="js/app.js"></script>
 
         <!-- ServiceWorker用のJavaScript読み込み -->
         <script src="config.js"></script>
