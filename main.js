@@ -10,6 +10,7 @@ function onLogin() {
 
     // プログレスバー表示
     document.getElementById("id_loader").style.display="";
+    // ログイン（クッキー書き込み）
     if (idText) {
         if (!writeCookie(idText)) {
             error = "ログインに失敗しました。";
@@ -22,8 +23,18 @@ function onLogin() {
     if (error) {
         unsubscribe();
     } else {
-    // ログイン成功ならサブスクリプション取得
-        subscribe();
+        // ログイン成功ならサブスクリプション取得
+        // ServiceWorkerの登録
+        // Check that service workers are supported, if so, progressively
+        // enhance and add push messaging support, otherwise continue without it.
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js').then(initialiseState());
+            // TODO 本来は初期化成功時に行いたい
+            subscribe();
+        } else {
+            console.log('Service workers aren\'t supported in this browser.');
+            error = "ServiceWorkerの登録に失敗しました。";
+        }
     }
 
     // 遅延処理
@@ -50,6 +61,9 @@ function onLogout() {
     if (!deleteCookie()) {
         error = "ログアウトに失敗しました。";
     }
+
+    // ServiceWorkerの解除
+    unsubscribe();
 
     // 遅延処理
     var timerId = setInterval(function() {
@@ -100,17 +114,6 @@ function onDelete() {
 /** ページ読み込み処理 */
 window.addEventListener('load', function() {
     var result;
-
-    // ServiceWorkerの登録
-    // Check that service workers are supported, if so, progressively
-    // enhance and add push messaging support, otherwise continue without it.
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js')
-        .then(initialiseState);
-    } else {
-        result = false;
-        console.log('Service workers aren\'t supported in this browser.');
-    }
     result = readCookie();
 
     // ログインボタン表示切替
@@ -130,6 +133,7 @@ function showLogin(aShow) {
     }
 }
 
+/** Subscriptionとendpointのマージ */
 // This method handles the removal of subscriptionId
 // in Chrome 44 by concatenating the subscription Id
 // to the subscription endpoint
@@ -145,12 +149,12 @@ function endpointWorkaround(pushSubscription) {
   if (pushSubscription.subscriptionId &&
     pushSubscription.endpoint.indexOf(pushSubscription.subscriptionId) === -1) {
     // Handle version 42 where you have separate subId and Endpoint
-    mergedEndpoint = pushSubscription.endpoint + '/' +
-      pushSubscription.subscriptionId;
+    mergedEndpoint = pushSubscription.endpoint + '/' + pushSubscription.subscriptionId;
   }
   return mergedEndpoint;
 }
 
+/** テスト用エンドポイント作成送信 */
 function sendSubscriptionToServer(subscription) {
   // TODO: Send the subscription.endpoint
   // to your server and save it to send a
@@ -167,6 +171,7 @@ function sendSubscriptionToServer(subscription) {
   showCurlCommand(mergedEndpoint);
 }
 
+/** GCM向けCurlコマンド作成 */
 // NOTE: This code is only suitable for GCM endpoints,
 // When another browser has a working version, alter
 // this to send a PUSH request directly to the endpoint

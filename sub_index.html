@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <script src="main.js"></script>
-    <script src="cookie-util.js"></script>
+    <script src="js/cookie-util.js"></script>
     <meta charset="UTF-8">
     <title>Kytest by Web-Push</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,14 +10,25 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+        <!-- particles—p‚ÌCSS“Ç‚Ýž‚Ý -->
+        <link rel="stylesheet" type="text/css"href="stylesheets/style.css"  media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="stylesheets/progress.css" media="screen">
   </head>
   <body>
-    <section class="page-header">
-      <h1 class="project-name">SubCookieTest</h1>
-      <h2 class="project-tagline"></h2>
-      <a class="btn" onClick="onWrite()">Write</a>
-      <a class="btn" onClick="onRead()">Read</a>
-      <a class="btn" onClick="onDelete()">Delete</a>
-    </section>  
+    <div id="particles-js">
+        <section class="page-header">
+            <h1 class="project-name">SubCookieTest</h1>
+            <h2 class="project-tagline"></h2>
+            <a class="btn" onClick="onWrite()">Write</a>
+            <a class="btn" onClick="onRead()">Read</a>
+            <a class="btn" onClick="onDelete()">Delete</a>
+        </section>
+    </div>
+
+    <div id="id_loader" style="display:none"></div>
+
+    <!-- particles—v‚ÌJavaScript“Ç‚Ýž‚Ý -->
+    <script src="js/particles.min.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
