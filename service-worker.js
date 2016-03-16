@@ -37,3 +37,7 @@ self.addEventListener('notificationclick', function(event) {
     }
   }));
 });
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(self.clients.claim());
+});
