@@ -47,12 +47,12 @@ function onLogout() {
     // プログレスバー表示
     document.getElementById("id_loader").style.display="";
 
+    // ServiceWorkerの解除
+    unsubscribe();
+
     if (!deleteCookie()) {
         error = "ログアウトに失敗しました。";
     }
-
-    // ServiceWorkerの解除
-    unsubscribe();
 
     // 遅延処理
     var timerId = setInterval(function() {
@@ -110,7 +110,7 @@ window.addEventListener('load', function() {
 
     // ページの読み込み時点でログイン状態ならServiceWorkerの登録とsubscribeを行う
     if (result) {
-        registServiceWorker();
+        isReady();
     }
 });
 
@@ -127,19 +127,29 @@ function showLogin(aShow) {
     }
 }
 
+/** ServiceWorkerの状態チェック */
+function isReady() {
+     navigator.serviceWorker.ready.then(registServiceWorker); 
+}
+
 /** ServiceWorkerの登録処理 */
-function registServiceWorker() {
-    // ログイン成功ならサブスクリプション取得
-    // ServiceWorkerの登録
-    // Check that service workers are supported, if so, progressively
-    // enhance and add push messaging support, otherwise continue without it.
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js');
-        // TODO 本来は初期化成功時に行いたい
-        subscribe();
-    } else {
-        console.log('Service workers aren\'t supported in this browser.');
-        error = "ServiceWorkerの登録に失敗しました。";
+function registServiceWorker(result) {
+    console.log(result);
+
+    // ServiceWorkerがReady状態でなければ再登録をする
+    if (!result) {
+        // ログイン成功ならサブスクリプション取得
+        // ServiceWorkerの登録
+        // Check that service workers are supported, if so, progressively
+        // enhance and add push messaging support, otherwise continue without it.
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js');
+            // TODO 本来は初期化成功時に行いたい
+            subscribe();
+        } else {
+            console.log('Service workers aren\'t supported in this browser.');
+            error = "ServiceWorkerの登録に失敗しました。";
+        }
     }
 }
 
@@ -199,7 +209,10 @@ function unsubscribe() {
     // ServiceWorker の解除
     serviceWorkerRegistration.unregister().then(onResult);
 
-    // TODO このあたりでKii Cloudのデータ削除処理を行う予定
+    // Cookieから値が取得できなかったので仕方無くdocumentからログインユーザーを取得する
+    result = document.in.id_auIdTxt.value;
+    console.log('LogoutUser=' + result);
+    deleteData(result);
 
     // To unsubscribe from push messaging, you need get the
     // subcription object, which you can call unsubscribe() on.
