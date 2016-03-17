@@ -143,9 +143,9 @@ function registServiceWorker(result) {
         // Check that service workers are supported, if so, progressively
         // enhance and add push messaging support, otherwise continue without it.
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js');
-            // TODO 本来は初期化成功時に行いたい
-            subscribe();
+            navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+                subscribe();
+            });
         } else {
             console.log('Service workers aren\'t supported in this browser.');
             error = "ServiceWorkerの登録に失敗しました。";
@@ -188,11 +188,11 @@ function sendSubscriptionToServer(subscription) {
   userId = document.in.id_auIdTxt.value;
   endpoint = endpointWorkaround(subscription);
   serviceUrl = window.location.href;
-
+  
   console.log('userId :' + userId);
   console.log('endpoint :' + endpoint);
   console.log('serviceUrl :' + serviceUrl);
-
+  
   registerData(userId, endpoint, serviceUrl);
 
 }
