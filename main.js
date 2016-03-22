@@ -47,12 +47,18 @@ function onLogout() {
     // プログレスバー表示
     document.getElementById("id_loader").style.display="";
 
+    // Cookieからログインユーザーを取得する
+    result = readCookie();
+    console.log('LogoutUser=' + result);
+
+    // KiiCloudからユーザーを削除する
+    deleteData(result);
+
+    // CooKieを削除する
+    deleteCookie();
+
     // ServiceWorkerの解除
     unsubscribe();
-
-    if (!deleteCookie()) {
-        error = "ログアウトに失敗しました。";
-    }
 
     // 遅延処理
     var timerId = setInterval(function() {
@@ -110,7 +116,7 @@ window.addEventListener('load', function() {
 
     // ページの読み込み時点でログイン状態ならServiceWorkerの登録とsubscribeを行う
     if (result) {
-        isReady();
+        getRegistration();
     }
 });
 
@@ -128,8 +134,19 @@ function showLogin(aShow) {
 }
 
 /** ServiceWorkerの状態チェック */
-function isReady() {
-     navigator.serviceWorker.ready.then(registServiceWorker); 
+function getRegistration() {
+   navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+    registration.pushManager.getSubscription().then(isReady);
+  });
+}
+
+function isReady(result) {
+    console.log(result);
+    if (!result) {
+        subscribe();
+    } else {
+        console.log('Subscriptionが取れたので何もしない');
+    }
 }
 
 /** ServiceWorkerの登録処理 */
@@ -206,14 +223,6 @@ function onResult(result){
 function unsubscribe() {
   navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
 
-    // ServiceWorker の解除
-    serviceWorkerRegistration.unregister().then(onResult);
-
-    // Cookieから値が取得できなかったので仕方無くdocumentからログインユーザーを取得する
-    result = document.in.id_auIdTxt.value;
-    console.log('LogoutUser=' + result);
-    deleteData(result);
-
     // To unsubscribe from push messaging, you need get the
     // subcription object, which you can call unsubscribe() on.
     serviceWorkerRegistration.pushManager.getSubscription().then(
@@ -239,6 +248,9 @@ function unsubscribe() {
           // an unusual state, so may be best to remove
           // the subscription id from your data store and
           // inform the user that you disabled push
+
+          // ServiceWorker の解除
+          serviceWorkerRegistration.unregister().then(onResult);
 
           console.log('Unsubscription error: ', e);
           return false;
