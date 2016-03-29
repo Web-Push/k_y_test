@@ -11,7 +11,7 @@ self.addEventListener('message', function (event) {
 self.addEventListener('push', function(event) {
   console.log('Received a push message', event);
   self.registration.showNotification("サービスA", {
-    body:'おしらせ準備中',
+    body:'お知らせ準備中',
     tag:'k_y_test-notification-tag' 
   });
   event.waitUntil(
