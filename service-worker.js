@@ -166,7 +166,7 @@ function showNotification(result) {
   }
 
   self.registration.showNotification(title, {
-    {action:url, title: 'k_y_test'}
+    {action:url, title: 'k_y_test'},
     body: body,
     icon: icon,
     tag: tag
