@@ -40,12 +40,12 @@ self.addEventListener('notificationclick', function(event) {
   }).then(function(clientList) {
     for (var i = 0; i < clientList.length; i++) {
       var client = clientList[i];
-      if (client.url === '/' && 'focus' in client) {
+      if (client.url === '/k_y_test' && 'focus' in client) {
         return client.focus();
       }
     }
     if (clients.openWindow) {
-      return clients.openWindow('/');
+      return clients.openWindow('/k_y_test');
     }
   }));
 });
