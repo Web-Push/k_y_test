@@ -149,7 +149,7 @@ function checkLogin(jsondata) {
 
 /** Notificationの表示処理 */
 function showNotification(result) {
-  var title = 'yt-test.';
+  var title = 'k_y_test.';
   var body = '';
   var icon = '/images/icon-192x192.png';
   var tag = 'simple-push-demo-notification-tag';
