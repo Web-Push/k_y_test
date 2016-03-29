@@ -40,7 +40,7 @@ self.addEventListener('notificationclick', function(event) {
   }).then(function(clientList) {
     for (var i = 0; i < clientList.length; i++) {
       var client = clientList[i];
-      if (client.url === '/k_y_test' && 'focus' in client) {
+      if (client.url === 'https://web-push.github.io/k_y_test/' && 'focus' in client) {
         return client.focus();
       }
     }
