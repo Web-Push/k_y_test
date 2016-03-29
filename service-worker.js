@@ -158,15 +158,17 @@ function showNotification(result) {
   var tag = 'k_y_test-notification-tag';
 
   if (result === true) {
-    body = 'ログイン状態です';
+    body = 'サービスAからお知らせ';
   　url = 'https://web-push.github.io/k_y_test/';
   } else {
-    body = 'ログアウト状態です';
+    body = 'サービスAからログアウトしています';
     url = '';
   }
 
   self.registration.showNotification(title, {
-    actions: {action:url, title: 'k_y_test'},
+    actions: [
+       {action: url, title: 'サービスAにアクセス'}
+    ],
     body: body,
     icon: icon,
     tag: tag
