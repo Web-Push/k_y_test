@@ -211,13 +211,19 @@ function sendSubscriptionToServer(subscription) {
   userId = readCookie();
   endpoint = endpointWorkaround(subscription);
   serviceUrl = window.location.href;
-  
+
   console.log('userId :' + userId);
   console.log('endpoint :' + endpoint);
   console.log('serviceUrl :' + serviceUrl);
-  
+
   registerData(userId, endpoint, serviceUrl);
 
+
+  navigator.serviceWorker.controller.postMessage({
+    action: 'LoginUser',
+    userId: userId,
+    serviceUrl: serviceUrl
+  });
 }
 
 
