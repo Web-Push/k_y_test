@@ -10,7 +10,10 @@ self.addEventListener('message', function (event) {
 /** Push通知を受けたときの処理 */
 self.addEventListener('push', function(event) {
   console.log('Received a push message', event);
-
+  self.registration.showNotification("サービスA", {
+    body:'おしらせ準備中',
+    tag:'k_y_test-notification-tag' 
+  });
   event.waitUntil(
     fetch('https://web-push.github.io/WebPushControl/users.json').then(function(response){
       if (response.status !== 200) {
@@ -148,13 +151,13 @@ function checkLogin(jsondata) {
 
 /** Notificationの表示処理 */
 function showNotification(result, user) {
-  var title = 'k_y_test.';
+  var title = 'サービスA';
   var body = '';
   var icon = '/images/icon-192x192.png';
   var tag = 'k_y_test-notification-tag';
 
   if (result === true) {
-    body = user + 'さんへサービスAからお知らせ';
+    body = user + 'さんへからお知らせ';
   } else {
     body = user + 'さんはログアウトしています';
     url = '';
