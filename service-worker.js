@@ -157,7 +157,7 @@ function showNotification(result, user) {
   var tag = 'k_y_test-notification-tag';
 
   if (result === true) {
-    body = user + 'さんへからお知らせ';
+    body = user + 'さんへお知らせ';
   } else {
     body = user + 'さんはログアウトしています';
     url = '';
