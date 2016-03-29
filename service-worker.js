@@ -32,7 +32,10 @@ self.addEventListener('notificationclick', function(event) {
   // Android doesn’t close the notification when you click on it
   // See: http://crbug.com/463146
   event.notification.close();
-
+  var action = event.action;
+  if (action === '') {
+    return;
+  }
   // This looks to see if the current is already open and
   // focuses if it is
   event.waitUntil(clients.matchAll({
@@ -40,12 +43,12 @@ self.addEventListener('notificationclick', function(event) {
   }).then(function(clientList) {
     for (var i = 0; i < clientList.length; i++) {
       var client = clientList[i];
-      if (client.url === 'https://web-push.github.io/k_y_test/' && 'focus' in client) {
+      if (client.url === action && 'focus' in client) {
         return client.focus();
       }
     }
     if (clients.openWindow) {
-      return clients.openWindow('/k_y_test');
+      return clients.openWindow(action);
     }
   }));
 });
@@ -152,15 +155,18 @@ function showNotification(result) {
   var title = 'k_y_test.';
   var body = '';
   var icon = '/images/icon-192x192.png';
-  var tag = 'simple-push-demo-notification-tag';
+  var tag = 'k_y_test-notification-tag';
 
   if (result === true) {
     body = 'ログイン状態です';
+  　url = 'https://web-push.github.io/k_y_test/';
   } else {
     body = 'ログアウト状態です';
+    url = '';
   }
 
   self.registration.showNotification(title, {
+    {action:url, title: 'k_y_test'}
     body: body,
     icon: icon,
     tag: tag
