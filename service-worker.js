@@ -141,22 +141,22 @@ function checkLogin(jsondata) {
           cnt++;
         }
       }
-      showNotification(result);
+      showNotification(result, user);
     };
   };
 }
 
 /** Notificationの表示処理 */
-function showNotification(result) {
+function showNotification(result, user) {
   var title = 'k_y_test.';
   var body = '';
   var icon = '/images/icon-192x192.png';
   var tag = 'k_y_test-notification-tag';
 
   if (result === true) {
-    body = 'サービスAからお知らせ';
+    body = user + 'さんへサービスAからお知らせ';
   } else {
-    body = 'ログアウトしています';
+    body = user + 'さんはログアウトしています';
     url = '';
   }
 
