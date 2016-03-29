@@ -32,10 +32,6 @@ self.addEventListener('notificationclick', function(event) {
   // Android doesn’t close the notification when you click on it
   // See: http://crbug.com/463146
   event.notification.close();
-  var action = event.action;
-  if (action === '') {
-    return;
-  }
   // This looks to see if the current is already open and
   // focuses if it is
   event.waitUntil(clients.matchAll({
@@ -43,12 +39,12 @@ self.addEventListener('notificationclick', function(event) {
   }).then(function(clientList) {
     for (var i = 0; i < clientList.length; i++) {
       var client = clientList[i];
-      if (client.url === action && 'focus' in client) {
+      if (client.url === 'https://web-push.github.io/k_y_test/' && 'focus' in client) {
         return client.focus();
       }
     }
     if (clients.openWindow) {
-      return clients.openWindow(action);
+      return clients.openWindow('https://web-push.github.io/k_y_test/');
     }
   }));
 });
@@ -159,16 +155,12 @@ function showNotification(result) {
 
   if (result === true) {
     body = 'サービスAからお知らせ';
-  　url = 'https://web-push.github.io/k_y_test/';
   } else {
-    body = 'サービスAからログアウトしています';
+    body = 'ログアウトしています';
     url = '';
   }
 
   self.registration.showNotification(title, {
-    actions: [
-       {action: url, title: 'サービスAにアクセス'}
-    ],
     body: body,
     icon: icon,
     tag: tag
