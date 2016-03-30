@@ -47,7 +47,7 @@ self.addEventListener('notificationclick', function(event) {
       }
     }
     if (clients.openWindow) {
-      return clients.openWindow('https://web-push.github.io/k_y_test/');
+      return clients.openWindow('http://www.yahoo.co.jp/');
     }
   }));
 });
